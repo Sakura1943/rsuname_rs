@@ -20,19 +20,19 @@ impl Info {
     pub fn new() -> Result<Self> {
         let uname = uname()?;
         let Some(sysname) = uname.sysname().to_str() else {
-            return Err(anyhow!("Fetch sysname failed"));
+            return Err(anyhow!("Failed to get sysname"));
         };
         let Some(nodename) = uname.nodename().to_str() else {
-            return Err(anyhow!("Fetch nodename failed"))
+            return Err(anyhow!("Failed to get nodename"))
         };
         let Some(release) = uname.release().to_str() else {
-            return Err(anyhow!("Fetch release failed"))
+            return Err(anyhow!("Failed to get release"))
         };
         let Some(machine) = uname.machine().to_str() else {
-            return Err(anyhow!("Fetch machine failed"))
+            return Err(anyhow!("Failed to get machine"))
         };
         let Some(version) = uname.version().to_str() else {
-            return Err(anyhow!("Fetch version failed"))
+            return Err(anyhow!("Failed to get version"))
         };
         let processor = if cfg!(target_arch = "x86") {
             "x86".to_owned()

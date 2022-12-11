@@ -11,7 +11,6 @@ use rsuname::{
 #[cfg(not(target_os = "ios"))]
 #[cfg(not(target_os = "macos"))]
 #[cfg(not(target_os = "dragonfly"))]
-
 fn main() -> Result<()> {
     let info = Info::new()?;
 
