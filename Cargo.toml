@@ -1,0 +1,23 @@
+[package]
+name = "rsuname"
+authors = ["sakunia <sakunia@foxmail.com>"]
+description = "Uname rewrite with rust"
+readme = "README.md"
+license = "MIT"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.66"
+clap = { version = "4.0.29", features = ["derive"] }
+colored = "2.0.0"
+nix = "0.26.1"
+
+[profile.release]
+lto = true
+strip = true
+
+[build-dependencies]
+clap = { version = "4.0.29", features = ["derive"] }
+clap_complete = "4.0.6"
+clap_complete_nushell = "0.1.8"
