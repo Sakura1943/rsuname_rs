@@ -61,13 +61,40 @@ impl Info {
         } else {
             "unknown".to_owned()
         };
+
+        let operating_system = if cfg!(all(
+            target_os = "linux",
+            any(target_env = "gnu", target_env = "")
+        )) {
+            "GNU/Linux".to_owned()
+        } else if cfg!(all(
+            target_os = "linux",
+            not(any(target_env = "gnu", target_env = ""))
+        )) {
+            "Linux".to_owned()
+        } else if cfg!(target_os = "android") {
+            "Android".to_owned()
+        } else if cfg!(target_os = "freebsd") {
+            "FreeBSD".to_owned()
+        } else if cfg!(target_os = "netbsd") {
+            "NetBSD".to_owned()
+        } else if cfg!(target_os = "openbsd") {
+            "OpenBSD".to_owned()
+        } else if cfg!(target_os = "fuchsia") {
+            "Fuchsia".to_owned()
+        } else if cfg!(target_os = "redox") {
+            "Redox".to_owned()
+        } else {
+            "Unknown".to_owned()
+        };
+
         Ok(Self {
             kernel_name: sysname.to_owned(),
             node_name: nodename.to_owned(),
             release: release.to_owned(),
             machine: machine.to_owned(),
             kernel_version: version.to_owned(),
-            operating_system: format!("GNU/{sysname}"),
+            operating_system,
             hardware_platform,
             processor,
         })
