@@ -54,8 +54,18 @@ fn main() -> Result<()> {
                 print_hardware_platform(&info)?;
                 print!("\n");
             } else {
-                print_processor(&info)?;
-                print_hardware_platform(&info)?;
+                if !client.all
+                    && !client.kernel_name
+                    && !client.kernel_release
+                    && !client.kernel_version
+                    && !client.machine
+                    && !client.node_name
+                    && !client.operating_system
+                {
+                    print_processor(&info)?;
+                    print_hardware_platform(&info)?;
+                    return Ok(());
+                }
             }
         }
         (true, false) => {
@@ -63,7 +73,17 @@ fn main() -> Result<()> {
                 print_processor(&info)?;
                 print!("\n");
             } else {
-                print_processor(&info)?;
+                if !client.all
+                    && !client.kernel_name
+                    && !client.kernel_release
+                    && !client.kernel_version
+                    && !client.machine
+                    && !client.node_name
+                    && !client.operating_system
+                {
+                    print_processor(&info)?;
+                    return Ok(());
+                }
             }
         }
         (false, true) => {
@@ -71,7 +91,17 @@ fn main() -> Result<()> {
                 print_hardware_platform(&info)?;
                 print!("\n");
             } else {
-                print_hardware_platform(&info)?;
+                if !client.all
+                    && !client.kernel_name
+                    && !client.kernel_release
+                    && !client.kernel_version
+                    && !client.machine
+                    && !client.node_name
+                    && !client.operating_system
+                {
+                    print_hardware_platform(&info)?;
+                    return Ok(());
+                }
             }
         }
         (false, false) => {}
