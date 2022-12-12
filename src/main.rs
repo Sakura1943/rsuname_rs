@@ -13,6 +13,17 @@ use rsuname::{
 fn main() -> Result<()> {
     let info = Info::new()?;
     let client = Cli::build();
+    if !client.kernel_name
+        && !client.all
+        && !client.hardware_platform
+        && !client.kernel_version
+        && !client.machine
+        && !client.node_name
+        && !client.operating_system
+        && !client.processor
+    {
+        print_kernel_name(&info)?;
+    }
     match client.all {
         true => {
             print_all(&info)?;
