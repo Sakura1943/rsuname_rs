@@ -19,6 +19,8 @@ pub struct Info {
 /* Target processor */
 #[cfg(target_arch = "x86")]
 const PROCESSOR: &str = "x86";
+#[cfg(all(target_arch = "x86_64", not(target_os = "linux")))]
+const PROCESSOR: &str = "x86_64";
 #[cfg(target_arch = "mips")]
 const PROCESSOR: &str = "mips";
 #[cfg(target_arch = "powerpc")]
