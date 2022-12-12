@@ -4,7 +4,6 @@ pub mod cli;
 pub use anyhow::{anyhow, Result};
 use nix::sys::utsname::uname;
 
-#[derive(Debug, Clone, Default)]
 pub struct Info {
     pub kernel_name: String,
     pub node_name: String,

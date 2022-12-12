@@ -1,10 +1,10 @@
 [package]
 name = "rsuname"
 authors = ["sakunia <sakunia@foxmail.com>"]
-description = "Uname rewrite with rust"
+description = "Uname rewrite with rust program language"
 readme = "README.md"
 license = "MIT"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 
 [dependencies]
