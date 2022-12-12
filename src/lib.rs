@@ -16,6 +16,49 @@ pub struct Info {
     pub operating_system: String,
 }
 
+/* Target processor */
+#[cfg(target_arch = "x86")]
+const PROCESSOR: &str = "x86";
+#[cfg(target_arch = "mips")]
+const PROCESSOR: &str = "mips";
+#[cfg(target_arch = "powerpc")]
+const PROCESSOR: &str = "powerpc";
+#[cfg(target_arch = "powerpc64")]
+const PROCESSOR: &str = "powerpc64";
+#[cfg(target_arch = "arm")]
+const PROCESSOR: &str = "arm";
+#[cfg(target_arch = "aarch64")]
+const PROCESSOR: &str = "aarch64";
+
+/* Hardware platform */
+#[cfg(target_vendor = "apple")]
+const HARDWARE_PLATFORM: &str = "apple";
+#[cfg(target_vendor = "fortanix")]
+const HARDWARE_PLATFORM: &str = "fortanix";
+#[cfg(target_vendor = "pc")]
+const HARDWARE_PLATFORM: &str = "pc";
+#[cfg(target_os = "linux")]
+const HARDWARE_PLATFORM: &str = "unknown";
+const PROCESSOR: &str = "unknown";
+
+/* Operating system */
+#[cfg(all(target_os = "linux", any(target_env = "gnu", target_env = "")))]
+const OPERATING_SYSTEM: &str = "GNU/Linux";
+#[cfg(all(target_os = "linux", not(any(target_env = "gnu", target_env = ""))))]
+const OPERATING_SYSTEM: &str = "Linux";
+#[cfg(target_os = "android")]
+const OPERATING_SYSTEM: &str = "Android";
+#[cfg(target_os = "freebsd")]
+const OPERATING_SYSTEM: &str = "FreeBSD";
+#[cfg(target_os = "netbsd")]
+const OPERATING_SYSTEM: &str = "NetBSD";
+#[cfg(target_os = "openbsd")]
+const OPERATING_SYSTEM: &str = "OpenBSD";
+#[cfg(target_os = "fuchsia")]
+const OPERATING_SYSTEM: &str = "Fuchsia";
+#[cfg(target_os = "redox")]
+const OPERATING_SYSTEM: &str = "Redox";
+
 impl Info {
     pub fn new() -> Result<Self> {
         let uname = uname()?;
@@ -34,59 +77,6 @@ impl Info {
         let Some(version) = uname.version().to_str() else {
             return Err(anyhow!("Failed to get version"))
         };
-        let processor = if cfg!(target_arch = "x86") {
-            "x86".to_owned()
-        } else if cfg!(target_arch = "x86_64") {
-            "x86_64".to_owned()
-        } else if cfg!(target_arch = "mips") {
-            "mips".to_owned()
-        } else if cfg!(target_arch = "powerpc") {
-            "powerpc".to_owned()
-        } else if cfg!(target_arch = "powerpc64") {
-            "powerpc64".to_owned()
-        } else if cfg!(target_arch = "arm") {
-            "arm".to_owned()
-        } else if cfg!(target_arch = "aarch64") {
-            "aarch64".to_owned()
-        } else {
-            "unknown".to_owned()
-        };
-
-        let hardware_platform = if cfg!(target_vendor = "apple") {
-            "apple".to_owned()
-        } else if cfg!(target_vendor = "fortanix") {
-            "fortanix".to_owned()
-        } else if cfg!(target_vendor = "pc") {
-            "pc".to_owned()
-        } else {
-            "unknown".to_owned()
-        };
-
-        let operating_system = if cfg!(all(
-            target_os = "linux",
-            any(target_env = "gnu", target_env = "")
-        )) {
-            "GNU/Linux".to_owned()
-        } else if cfg!(all(
-            target_os = "linux",
-            not(any(target_env = "gnu", target_env = ""))
-        )) {
-            "Linux".to_owned()
-        } else if cfg!(target_os = "android") {
-            "Android".to_owned()
-        } else if cfg!(target_os = "freebsd") {
-            "FreeBSD".to_owned()
-        } else if cfg!(target_os = "netbsd") {
-            "NetBSD".to_owned()
-        } else if cfg!(target_os = "openbsd") {
-            "OpenBSD".to_owned()
-        } else if cfg!(target_os = "fuchsia") {
-            "Fuchsia".to_owned()
-        } else if cfg!(target_os = "redox") {
-            "Redox".to_owned()
-        } else {
-            "Unknown".to_owned()
-        };
 
         Ok(Self {
             kernel_name: sysname.to_owned(),
@@ -94,9 +84,9 @@ impl Info {
             release: release.to_owned(),
             machine: machine.to_owned(),
             kernel_version: version.to_owned(),
-            operating_system,
-            hardware_platform,
-            processor,
+            operating_system: OPERATING_SYSTEM.to_owned(),
+            hardware_platform: HARDWARE_PLATFORM.to_owned(),
+            processor: PROCESSOR.to_owned(),
         })
     }
 }

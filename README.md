@@ -9,7 +9,7 @@ cargo build --release
 cp -rf target/release/rsuname /usr/bin
 ```
 
-# Usage
+# 📚 Usage
 
 ```shell
 rsuname --help

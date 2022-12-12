@@ -1,4 +1,3 @@
-use colored::*;
 use rsuname::Result;
 use rsuname::{
     all::print_all, cli::Cli, hardware_platform::print_hardware_platform,
@@ -13,10 +12,12 @@ use rsuname::{
 #[cfg(not(target_os = "dragonfly"))]
 fn main() -> Result<()> {
     let info = Info::new()?;
-
     let client = Cli::build();
     match client.all {
-        true => print_all(&info)?,
+        true => {
+            print_all(&info)?;
+            return Ok(());
+        }
         false => {
             if !client.kernel_name
                 && !client.kernel_release
@@ -24,6 +25,8 @@ fn main() -> Result<()> {
                 && !client.machine
                 && !client.node_name
                 && !client.operating_system
+                && !client.processor
+                && !client.hardware_platform
             {
                 return Ok(());
             }
@@ -44,19 +47,34 @@ fn main() -> Result<()> {
     if client.machine {
         print_machine(&info)?;
     }
-    if client.processor {
-        if info.processor != "unknown".to_owned() {
-            print_processor(&info)?;
-        } else {
-            eprintln!("{}", "Failed to get processor\n".bright_red());
+    match (client.processor, client.hardware_platform) {
+        (true, true) => {
+            if info.processor != "unknown" && info.hardware_platform != "unknown" {
+                print_processor(&info)?;
+                print_hardware_platform(&info)?;
+                print!("\n");
+            } else {
+                print_processor(&info)?;
+                print_hardware_platform(&info)?;
+            }
         }
-    }
-    if client.hardware_platform {
-        if info.hardware_platform != "unknown".to_owned() {
-            print_hardware_platform(&info)?;
-        } else {
-            eprintln!("{}", "Failed to get hardware platform\n".bright_red());
+        (true, false) => {
+            if info.processor != "unknown" && info.hardware_platform != "unknown" {
+                print_processor(&info)?;
+                print!("\n");
+            } else {
+                print_processor(&info)?;
+            }
         }
+        (false, true) => {
+            if info.processor != "unknown" && info.hardware_platform != "unknown" {
+                print_hardware_platform(&info)?;
+                print!("\n");
+            } else {
+                print_hardware_platform(&info)?;
+            }
+        }
+        (false, false) => {}
     }
     if client.operating_system {
         print_operating_system(&info)?;
