@@ -115,7 +115,7 @@ fn main() -> Result<()> {
                 }
             }
         }
-        (false, false) => {}
+        _ => {}
     }
     if client.operating_system {
         print_operating_system(&info)?;
